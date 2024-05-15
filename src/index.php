@@ -35,7 +35,7 @@
         if(empty($userInput)){
             echo '<div class="alert alert-danger" role="alert">Lütfen metin girişi yapın!</div>';
         } else {
-            $client = new Client('');
+            $client = new Client('API_KEY');
             $response = $client->geminiPro()->generateContent(
                 new TextPart('Gireceğim metni türkçeye çevir, çıktı olarak sadece çeviriyi yaz. "'. $userInput .'"'),
             );
