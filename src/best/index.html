@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkçe Çeviri Aracı</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./logo.jpg" rel="icon">
+    <style>
+        .yeah {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        AI ile herhangi bir dilden Türkçe çeviri aracı
+                    </div>
+                    <div class="card-body">
+                        <form id="translationForm" method="post">
+                            <div class="form-group">
+                                <label for="inputText">Metin</label>
+                                <input type="text" class="form-control" id="inputText" name="inputText" placeholder="Metni girin...">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="translateBtn">Çevir</button>
+                            <div class="mt-2 text-center" id="loadingIndicator" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <div id="translationResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("translationForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var form = event.target;
+            var formData = new FormData(form);
+
+            document.getElementById("translateBtn").setAttribute("disabled", "disabled");
+            document.getElementById("loadingIndicator").style.display = "block";
+
+            fetch('translate.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('translationResult').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                document.getElementById("translateBtn").removeAttribute("disabled");
+                document.getElementById("loadingIndicator").style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
